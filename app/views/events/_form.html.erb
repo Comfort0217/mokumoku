@@ -1,4 +1,4 @@
-<%= form_with model: event do |f| %>
+<%= form_with model: @event do |f| %>
   <%#= render 'shared/error_messages', object: f.object %>
   <div class="mb-3">
     <%= f.label :title %>
@@ -16,10 +16,17 @@
     <%= f.label :prefecture_id %>
     <%= f.collection_select :prefecture_id, Prefecture.all, :id, :name, {}, class: 'form-select' %>
   </div>
+  <% if logged_in? && current_user.woman? %>
+  <div class="mb-3">
+    <%= f.label '女性限定' %>
+    <%= f.check_box :only_woman, {checked: (@current_user == "woman"), value: true, id: 'event_only_woman' } %>
+  </div>
+  <% end %>
   <div class="mb-3">
     <%= f.label :thumbnail %>
     <%= f.file_field :thumbnail, class: 'form-control js-file-select-preview mb-3', accept: 'image/*', data: { target: '#preview-target' } %>
     <%= image_tag f.object.decorate.thumbnail, id: 'preview-target', class: 'w-100 border' %>
   </div>
-  <%= f.submit '登録', class: 'btn btn-primary' %>
+    <%= f.submit '登録', class: 'btn btn-primary' %>
 <% end %>
+
